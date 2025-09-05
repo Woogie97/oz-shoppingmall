@@ -1,0 +1,86 @@
+# 의존성 패키지들
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# 환경변수 파일들 (보안상 중요)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Next.js 빌드 파일들
+.next/
+out/
+build/
+dist/
+
+# 로그 파일들
+*.log
+logs/
+
+# 런타임 데이터
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# 커버리지 디렉터리 (테스트 결과)
+coverage/
+.nyc_output/
+
+# 에디터 및 IDE 파일들
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS 시스템 파일들
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows 시스템 파일들
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# 임시 파일들
+*.tmp
+*.temp
+
+# 데이터베이스 파일들 (로컬 개발용)
+*.sqlite
+*.db
+
+# 업로드된 파일들
+uploads/
+public/uploads/
+
+# TypeScript 빌드 정보
+*.tsbuildinfo
+next-env.d.ts
+
+# Vercel 배포 관련
+.vercel
+
+# 캐시 파일들
+.cache/
+.parcel-cache/
+
+# ESLint 캐시
+.eslintcache
+
+# 백업 파일들
+*.bak
+*.backup
+
+# 프로덕션 빌드 파일들
+/backend/build/
+/frontend/.next/
+/frontend/out/ 
