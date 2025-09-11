@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Button from '../ui/Button';
-import Input from '../ui/Input';
 import { authApi, User, UpdateUserRequest } from '../../lib/api';
 import { tokenUtils, getErrorMessage, validation } from '../../lib/helpers';
 
@@ -29,7 +28,8 @@ const MyPageClient = () => {
   useEffect(() => {
     const fetchUser = async () => {
       if (!tokenUtils.exists()) {
-        router.push('/login');
+        setError('로그인이 필요합니다. 로그인 후 다시 시도해주세요.');
+        setLoading(false);
         return;
       }
 
@@ -43,7 +43,13 @@ const MyPageClient = () => {
           address: data.address || '',
         });
       } catch (err) {
-        setError(getErrorMessage(err));
+        const errorMessage = getErrorMessage(err);
+        setError(errorMessage);
+        
+        // 401 에러인 경우 토큰 관련 안내 추가
+        if (errorMessage.includes('로그인이 필요합니다')) {
+          tokenUtils.remove();
+        }
       } finally {
         setLoading(false);
       }
@@ -131,11 +137,28 @@ const MyPageClient = () => {
   if (error) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-slate-50">
-        <div className="text-center">
-          <p className="text-red-500 mb-4">오류: {error}</p>
-          <Button onClick={() => router.push('/login')} variant="primary">
-            로그인 페이지로 이동
-          </Button>
+        <div className="text-center max-w-md">
+          <div className="p-6 bg-white rounded-lg shadow-sm">
+            <svg className="mx-auto h-12 w-12 text-red-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.268 16.5c-.77.833.192 2.5 1.732 2.5z" />
+            </svg>
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">오류가 발생했습니다</h2>
+            <p className="text-red-600 mb-6">{error}</p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Button 
+                onClick={() => window.location.reload()} 
+                variant="secondary"
+              >
+                새로고침
+              </Button>
+              <Button 
+                onClick={() => router.push('/login')} 
+                variant="primary"
+              >
+                로그인 페이지로 이동
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -176,46 +199,49 @@ const MyPageClient = () => {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">이름</label>
                   {isEditing ? (
-                    <Input
+                    <input
                       type="text"
                       value={formData.name || ''}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('name', e.target.value)}
-                      error={formErrors.name}
+                      className={`block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 sm:text-sm ${formErrors.name ? 'border-red-300' : ''}`}
                       placeholder="이름을 입력하세요"
                     />
                   ) : (
                     <p className="text-gray-900 py-2">{user.name}</p>
                   )}
+                  {formErrors.name && <p className="mt-1 text-sm text-red-600">{formErrors.name}</p>}
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">이메일</label>
                   {isEditing ? (
-                    <Input
+                    <input
                       type="email"
                       value={formData.email || ''}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('email', e.target.value)}
-                      error={formErrors.email}
+                      className={`block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 sm:text-sm ${formErrors.email ? 'border-red-300' : ''}`}
                       placeholder="이메일을 입력하세요"
                     />
                   ) : (
                     <p className="text-gray-900 py-2">{user.email || '제공되지 않음'}</p>
                   )}
+                  {formErrors.email && <p className="mt-1 text-sm text-red-600">{formErrors.email}</p>}
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">전화번호</label>
                   {isEditing ? (
-                    <Input
+                    <input
                       type="tel"
                       value={formData.phone || ''}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('phone', e.target.value)}
-                      error={formErrors.phone}
+                      className={`block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 sm:text-sm ${formErrors.phone ? 'border-red-300' : ''}`}
                       placeholder="010-1234-5678"
                     />
                   ) : (
                     <p className="text-gray-900 py-2">{user.phone || '등록되지 않음'}</p>
                   )}
+                  {formErrors.phone && <p className="mt-1 text-sm text-red-600">{formErrors.phone}</p>}
                 </div>
 
                 <div>
@@ -227,16 +253,17 @@ const MyPageClient = () => {
               <div className="mt-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">주소</label>
                 {isEditing ? (
-                  <Input
+                  <input
                     type="text"
                     value={formData.address || ''}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('address', e.target.value)}
-                    error={formErrors.address}
+                    className={`block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 sm:text-sm ${formErrors.address ? 'border-red-300' : ''}`}
                     placeholder="주소를 입력하세요"
                   />
                 ) : (
                   <p className="text-gray-900 py-2">{user.address || '등록되지 않음'}</p>
                 )}
+                {formErrors.address && <p className="mt-1 text-sm text-red-600">{formErrors.address}</p>}
               </div>
             </div>
 

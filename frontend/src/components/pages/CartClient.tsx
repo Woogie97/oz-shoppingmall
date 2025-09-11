@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Button from '../ui/Button';
@@ -10,6 +10,7 @@ import { useCartStore } from '../../store/cartStore';
 // 장바구니 클라이언트 컴포넌트
 const CartClient = () => {
   const router = useRouter();
+  const [authError, setAuthError] = useState<string | null>(null);
   
   // 카트 스토어 사용
   const { 
@@ -26,7 +27,7 @@ const CartClient = () => {
   // 컴포넌트 마운트 시 장바구니 데이터 로드
   useEffect(() => {
     if (!tokenUtils.exists()) {
-      router.push('/login');
+      setAuthError('로그인이 필요합니다. 로그인 후 장바구니를 확인할 수 있습니다.');
       return;
     }
     
@@ -59,6 +60,41 @@ const CartClient = () => {
       clearError();
     }
   }, [error, clearError]);
+
+  // 인증 오류가 있을 때 표시할 UI
+  if (authError) {
+    return (
+      <div className="bg-slate-50 min-h-screen">
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="text-center max-w-md">
+              <div className="p-6 bg-white rounded-lg shadow-sm">
+                <svg className="mx-auto h-12 w-12 text-yellow-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.268 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+                <h2 className="text-xl font-semibold text-gray-900 mb-2">로그인이 필요합니다</h2>
+                <p className="text-gray-600 mb-6">{authError}</p>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <Button 
+                    onClick={() => router.push('/products')} 
+                    variant="secondary"
+                  >
+                    쇼핑 계속하기
+                  </Button>
+                  <Button 
+                    onClick={() => router.push('/login')} 
+                    variant="primary"
+                  >
+                    로그인하기
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // 로딩 중일 때 표시할 UI
   if (loading) {

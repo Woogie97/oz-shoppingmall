@@ -70,7 +70,7 @@ export default function Home() {
           </p>
         </Link>
         <Link
-          href="/auth/login"
+          href="/login"
           className="group rounded-lg border border-transparent px-6 py-5 transition-colors bg-white shadow-subtle hover:border-gray-300 hover:bg-gray-100"
         >
           <h2 className={`mb-3 text-2xl font-semibold text-gray-900`}>
