@@ -31,12 +31,4 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.googleCallback = (req, res) => {
-  // Successful authentication, user object is in req.user
-  const token = jwt.sign({ userId: req.user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-  
-  // Redirect to frontend with the token
-  // In a real app, you'd have a specific frontend URL
-  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
-  res.redirect(`${frontendUrl}/auth/callback?token=${token}`);
-}; 
+ 

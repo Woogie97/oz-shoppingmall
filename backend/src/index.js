@@ -4,10 +4,6 @@ const express = require('express');
 const dotenv = require('dotenv');
 // CORS 설정 - 프론트엔드에서 백엔드 API 호출을 허용하기 위한 모듈
 const cors = require('cors');
-// Passport.js - 소셜 로그인(Google OAuth) 인증 처리를 위한 모듈
-const passport = require('passport');
-// Express 세션 - 사용자 로그인 상태 유지를 위한 세션 관리
-const session = require('express-session');
 
 // 각 기능별 라우터들을 불러옴 - API 엔드포인트들을 모듈화하여 관리
 const authRoutes = require('./routes/authRoutes');       // 인증 관련 API (/api/auth)
@@ -17,9 +13,6 @@ const cartRoutes = require('./routes/cartRoutes');       // 장바구니 관련 
 
 // 데이터베이스 초기 설정 함수 - 테이블 생성 및 샘플 데이터 삽입
 const setupDatabase = require('./config/dbSetup');
-
-// Passport.js Google OAuth 전략 설정을 불러옴
-require('./config/passportSetup'); // This configures passport
 
 // 환경변수 파일(.env) 로드 - DB 접속 정보, JWT 시크릿 등을 설정
 dotenv.config();
@@ -32,20 +25,8 @@ app.use(cors());
 // JSON 파싱 미들웨어 - 클라이언트가 보낸 JSON 데이터를 req.body로 파싱
 app.use(express.json());
 
-// Express 세션 설정 - 사용자 로그인 상태를 서버 메모리에 저장
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'your_secret_key', // 세션 암호화 키
-  resave: false,        // 세션이 수정되지 않아도 다시 저장할지 여부
-  saveUninitialized: false, // 초기화되지 않은 세션을 저장할지 여부
-}));
-
-// Passport 미들웨어 초기화 - 소셜 로그인 기능 활성화
-app.use(passport.initialize());
-// Passport 세션 연동 - 로그인 상태를 세션과 연결
-app.use(passport.session());
-
 // API 라우터들을 각각의 경로에 연결
-app.use('/api/auth', authRoutes);       // 인증: 회원가입, 로그인, 소셜로그인
+app.use('/api/auth', authRoutes);       // 인증: 회원가입, 로그인
 app.use('/api/products', productRoutes); // 상품: 목록조회, 생성, 수정, 삭제
 app.use('/api/users', userRoutes);       // 사용자: 프로필 조회
 app.use('/api/cart', cartRoutes);        // 장바구니: 추가, 조회, 수정, 삭제
