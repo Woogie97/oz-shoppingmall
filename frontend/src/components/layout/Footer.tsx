@@ -55,7 +55,7 @@ const Footer = () => {
 
         <div className="mt-8 pt-8 border-t border-gray-700 text-center">
           <p className="text-gray-300">
-            © 2024 모두의 쇼핑몰. All rights reserved.
+            © 2025 Oz Coding School. All rights reserved.
           </p>
         </div>
       </div>
