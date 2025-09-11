@@ -18,10 +18,12 @@ interface Product {
 interface ProductCardProps {
   product: Product;
   onAddToCart: (productId: number) => void;
+  isAddingToCart?: boolean;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart, isAddingToCart = false }) => {
   const isOutOfStock = product.stock === 0;
+  const isDisabled = isOutOfStock || isAddingToCart;
 
   return (
     <div className="border border-gray-200 rounded-lg bg-white shadow-sm overflow-hidden transition-transform transform hover:-translate-y-1 hover:shadow-lg">
@@ -58,11 +60,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
         {/* 장바구니 추가 버튼 */}
         <Button
           onClick={() => onAddToCart(product.id)}
-          disabled={isOutOfStock}
+          disabled={isDisabled}
           variant={isOutOfStock ? 'secondary' : 'primary'}
           fullWidth
         >
-          {isOutOfStock ? '품절' : '장바구니에 담기'}
+          {isAddingToCart ? '추가 중...' : isOutOfStock ? '품절' : '장바구니에 담기'}
         </Button>
       </div>
     </div>

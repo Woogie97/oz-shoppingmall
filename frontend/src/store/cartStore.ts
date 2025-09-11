@@ -1,5 +1,5 @@
-// 장바구니 관련 상태 관리 (Zustand 도입 예정)
-// TODO: Zustand 라이브러리 설치 후 구현 예정
+import { create } from 'zustand';
+import { cartApi } from '../lib/api';
 
 export interface CartItem {
   cart_id: number;
@@ -28,11 +28,6 @@ export interface CartActions {
   clearCart: () => void;
   clearError: () => void;
 }
-
-// Zustand 도입 시 다음과 같은 구조로 구현 예정:
-/*
-import { create } from 'zustand';
-import { cartApi } from '../lib/api';
 
 interface CartStore extends CartState, CartActions {}
 
@@ -114,4 +109,3 @@ export const useCartStore = create<CartStore>((set, get) => ({
 
   clearError: () => set({ error: null }),
 }));
-*/

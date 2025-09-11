@@ -42,8 +42,14 @@ export const validation = {
     return password.length >= 6;
   },
   
-  required: (value: string): boolean => {
-    return value.trim().length > 0;
+  required: (value: string | undefined): boolean => {
+    return value ? value.trim().length > 0 : false;
+  },
+  
+  phone: (phone: string): boolean => {
+    // 한국 전화번호 형식: 010-1234-5678, 02-123-4567 등
+    const phoneRegex = /^(01[016789]|02|0[3-9][0-9])-?[0-9]{3,4}-?[0-9]{4}$/;
+    return phoneRegex.test(phone.replace(/\s/g, ''));
   },
 };
 

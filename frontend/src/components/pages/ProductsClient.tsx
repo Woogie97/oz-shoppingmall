@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import ProductCard from '../ui/ProductCard';
-import { productApi, cartApi, Product } from '../../lib/api';
+import { productApi, Product } from '../../lib/api';
 import { getErrorMessage, tokenUtils } from '../../lib/helpers';
+import { useCartStore } from '../../store/cartStore';
 
 // 상품 목록 클라이언트 컴포넌트
 const ProductsClient = () => {
@@ -13,6 +14,9 @@ const ProductsClient = () => {
   const [loading, setLoading] = useState(true);
   // 상태 관리: 에러 메시지
   const [error, setError] = useState<string | null>(null);
+  
+  // 카트 스토어 사용
+  const { addItem, loading: cartLoading, error: cartError } = useCartStore();
 
   // 컴포넌트 마운트 시 상품 데이터 로드
   useEffect(() => {
@@ -37,10 +41,10 @@ const ProductsClient = () => {
     }
 
     try {
-      await cartApi.addItem(productId, 1);
+      await addItem(productId, 1);
       alert('장바구니에 추가되었습니다!');
     } catch (err) {
-      alert(getErrorMessage(err));
+      alert(cartError || '장바구니 추가 중 오류가 발생했습니다.');
     }
   };
 
@@ -66,6 +70,7 @@ const ProductsClient = () => {
               key={product.id}
               product={product}
               onAddToCart={addToCart}
+              isAddingToCart={cartLoading}
             />
           ))}
         </div>

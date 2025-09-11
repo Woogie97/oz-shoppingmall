@@ -6,6 +6,17 @@ export interface User {
   name: string;
   email: string;
   provider: string;
+  phone?: string;
+  address?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface UpdateUserRequest {
+  name?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
 }
 
 export interface Product {
@@ -122,6 +133,12 @@ export const authApi = {
     apiPost<ApiResponse<{ message: string }>>('/auth/signup', userData),
   
   getProfile: () => apiGet<User>('/users/me'),
+  
+  updateProfile: (userData: UpdateUserRequest) =>
+    apiPut<ApiResponse<User>>('/users/me', userData),
+    
+  googleLogin: (token: string) =>
+    apiPost<AuthResponse>('/auth/google', { token }),
 };
 
 export const productApi = {
