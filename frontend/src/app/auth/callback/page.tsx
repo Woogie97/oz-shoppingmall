@@ -1,33 +1,21 @@
-'use client';
+import AuthCallbackClient from '../../../components/pages/AuthCallbackClient';
+import { Metadata } from 'next';
+import { Suspense } from 'react';
 
-import { useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-
-const AuthCallbackPage = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  useEffect(() => {
-    const token = searchParams.get('token');
-    
-    if (token) {
-      localStorage.setItem('token', token);
-      // Redirect to a protected route or homepage
-      router.push('/');
-    } else {
-      // Handle error: No token found
-      // Redirect to login page with an error message
-      router.push('/login?error=authentication_failed');
-    }
-    // The dependency array is empty because we want this to run only once when the component mounts.
-    // The router and searchParams objects are stable.
-  }, []);
-
-  return (
-    <div className="flex items-center justify-center min-h-screen">
-      <p>Authenticating, please wait...</p>
-    </div>
-  );
+export const metadata: Metadata = {
+  title: '인증 처리 중 - 모두의 쇼핑몰',
+  description: '로그인 인증을 처리하고 있습니다.',
 };
 
-export default AuthCallbackPage; 
+// 인증 콜백 페이지 (서버 컴포넌트)
+export default function AuthCallbackPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center min-h-screen">
+        <p>인증 처리 중...</p>
+      </div>
+    }>
+      <AuthCallbackClient />
+    </Suspense>
+  );
+}

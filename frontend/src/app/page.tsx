@@ -25,7 +25,7 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold mb-2">품질 보장</h3>
+              <h3 className="text-xl font-semibold mb-2 text-gray-400">품질 보장</h3>
               <p className="text-gray-600">엄선된 고품질 상품만을 제공합니다</p>
             </div>
             <div className="text-center p-6">
@@ -34,7 +34,7 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold mb-2">합리적 가격</h3>
+              <h3 className="text-xl font-semibold mb-2 text-gray-400">합리적 가격</h3>
               <p className="text-gray-600">최상의 가성비를 제공합니다</p>
             </div>
             <div className="text-center p-6">
@@ -43,7 +43,7 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold mb-2">빠른 배송</h3>
+              <h3 className="text-xl font-semibold mb-2 text-gray-400">빠른 배송</h3>
               <p className="text-gray-600">신속하고 안전한 배송 서비스</p>
             </div>
           </div>
@@ -70,7 +70,7 @@ export default function Home() {
           </p>
         </Link>
         <Link
-          href="/login"
+          href="/auth/login"
           className="group rounded-lg border border-transparent px-6 py-5 transition-colors bg-white shadow-subtle hover:border-gray-300 hover:bg-gray-100"
         >
           <h2 className={`mb-3 text-2xl font-semibold text-gray-900`}>

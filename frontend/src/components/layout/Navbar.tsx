@@ -3,18 +3,18 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { tokenUtils } from '../../lib/helpers';
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    setIsLoggedIn(!!token);
+    setIsLoggedIn(tokenUtils.exists());
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    tokenUtils.remove();
     setIsLoggedIn(false);
     router.push('/');
   };
@@ -80,10 +80,10 @@ const Navbar = () => {
               </div>
             ) : (
               <div className="flex items-center space-x-3">
-                <Link href="/login" className="text-gray-600 hover:text-gray-900 text-sm font-medium">
+                <Link href="/auth/login" className="text-gray-600 hover:text-gray-900 text-sm font-medium">
                   로그인
                 </Link>
-                <Link href="/signup" className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-blue-700">
+                <Link href="/auth/signup" className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-blue-700">
                   회원가입
                 </Link>
               </div>
