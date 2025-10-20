@@ -36,6 +36,7 @@ coverage/
 # 에디터 및 IDE 파일들
 .vscode/
 .idea/
+.claude/
 *.swp
 *.swo
 *~
