@@ -22,12 +22,12 @@ cd oz-shoppingmall
 cd backend
 npm install
 
-# .env 파일 생성 (이미 생성되어 있음)
+# .env 파일 생성
 # DB_HOST=localhost
 # DB_USER=root
 # DB_PASSWORD=your_password_here
 # DB_NAME=shopping_mall
-# JWT_SECRET=your_super_secret_key_shopping_mall_2024
+# JWT_SECRET=your_super_secret_key_here
 # PORT=3001
 
 # 서버 실행
